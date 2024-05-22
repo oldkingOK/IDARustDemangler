@@ -6,11 +6,17 @@ try:
     import ida_kernwin
     import idautils
     import idaapi
+    import ida_diskio
     import idc
 except ModuleNotFoundError:
     print("[!] This is an IDA script")
     exit(-1)
 
+RES_EXE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "IDARustDemangler", 'rs-dml.exe')
+TARGET_EXE = os.path.join(ida_diskio.get_user_idadir(), "plugins", "IDARustDemangler", 'rs-dml.exe')
+if not os.path.exists(TARGET_EXE):
+    os.makedirs(os.path.dirname(TARGET_EXE), exist_ok=True)
+    shutil.copy(RES_EXE, TARGET_EXE)
 
 class IDARustDemangler():
     """
@@ -27,8 +33,8 @@ class IDARustDemangler():
         self.badchars = "*,'`" + self.delimiters
         self.queue = {}
         self.resolved = {}
-        self.rs_dml = shutil.which("rs-dml")
-        assert len(self.rs_dml) > 0, "rs-dml is not installed on your system"
+        self.rs_dml = TARGET_EXE
+        # assert len(self.rs_dml) > 0, "rs-dml is not installed on your system"
 
     def add(self, address: int, symbol: str) -> None:
         # Must add support for non legacy symbols

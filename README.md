@@ -4,6 +4,10 @@
 
 This project provides a script that demangles Rust function names and normalize it for [IDA](https://www.hex-rays.com/ida-pro/), making it easier to read and understand the code.
 
+# oldkingOK 修改版
+
+预置二进制文件
+
 # Requirements
 
 - Python 3.x
